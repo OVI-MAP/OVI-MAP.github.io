@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" 
+        content="OVI-MAP: Open-Vocabulary Instance-Semantic Mapping">
+  <meta name="keywords" content="Semantic Segmentation, Open-Vocabulary Semantics, 3D Mapping, SLAM">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OVI-MAP: Open-Vocabulary Instance-Semantic Mapping</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" 
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <!-- <link rel="icon" href="./static/images/favicon.svg"> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<!-- <nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://keunhong.com">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://hypernerf.github.io">
+            HyperNeRF
+          </a>
+          <a class="navbar-item" href="https://nerfies.github.io">
+            Nerfies
+          </a>
+          <a class="navbar-item" href="https://latentfusion.github.io">
+            LatentFusion
+          </a>
+          <a class="navbar-item" href="https://photoshape.github.io">
+            PhotoShape
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav> -->
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-2 publication-title">OVI-MAP</h1>
+          <h1 class="title is-3 publication-title">Open-Vocabulary Instance-Semantic Mapping</h1>
+          <h1 class="title is-5 publication-title">CVPR 2026</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://dzl666.github.io/">Zilong Deng</a><sup>1,3</sup>
+            </span>
+            <span class="author-block">
+              <a href="https://scholar.google.de/citations?user=TFsE4BIAAAAJ">Federico Tombari</a><sup>2,4</sup>
+            </span>
+            <span class="author-block">
+              <a href="https://people.inf.ethz.ch/pomarc/">Marc Pollefeys</a><sup>1,5</sup>
+            </span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=dfjN3YAAAAAJ">Johanna Wald</a><sup>2,†</sup>
+            </span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=U9-D8DYAAAAJ">Daniel Barath</a><sup>1,2,†</sup></span>
+            </span>
+          </div>
+
+          <div class="is-size-6 publication-authors">
+            <span class="author-block"><sup>1</sup>ETH Zurich,</span>
+            <span class="author-block"><sup>2</sup>Google,</span>
+            <span class="author-block"><sup>3</sup>University of Zurich,</span>
+            <span class="author-block"><sup>4</sup>TU Munich,</span>
+            <span class="author-block"><sup>5</sup>Microsoft</span>
+            <!-- <span class="author-block"><sup>5</sup>HUN-REN SZTAKI</span> -->
+          </div>
+
+          <div class="is-size-7 publication-authors">
+            †Corresponding Author 
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="./static/OVI-MAP_submission.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span> -->
+              <!-- Video Link. -->
+              <!-- <span class="link-block">
+                <a href="https://www.youtube.com/watch?v=MrKrnHhk8IA"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+              
+              <!-- Code Link. -->
+              <span class="link-block">
+                  <a href="" 
+                      class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+              </span>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body" style="width: 70%; margin: 0 auto; display: block;">
+      <img src="./static/images/teaser.png" class="teaser-fig" alt="teaser-fig."/>
+      <p class="has-text-centered">
+        Given a streaming RGB-D sequence with camera poses, OVI-MAP incrementally reconstructs a volumetric 3D scene while maintaining a class-agnostic instance map. 
+        Semantic information is then assigned in a zero-shot manner using selectively chosen views, enabling open-set object recognition. 
+        Our method supports real-time, open-world scene reconstruction with instance-level semantic understanding.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- <section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item item-steve">
+          <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/steve.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-chair-tp">
+          <video poster="" id="chair-tp" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/chair-tp.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-shiba">
+          <video poster="" id="shiba" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/shiba.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-fullbody">
+          <video poster="" id="fullbody" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/fullbody.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-blueshirt">
+          <video poster="" id="blueshirt" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/blueshirt.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-mask">
+          <video poster="" id="mask" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/mask.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-coffee">
+          <video poster="" id="coffee" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/coffee.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-toby">
+          <video poster="" id="toby" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/toby2.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Incremental open-vocabulary 3D instance-semantic mapping is essential for autonomous agents operating in complex everyday environments. 
+            However, it remains challenging due to the need for robust instance segmentation, real-time processing, and flexible open-set reasoning. 
+            Existing methods often rely on the closed-set assumption or dense per-pixel language fusion, which limits scalability and temporal consistency. 
+            We introduce OVI-MAP that decouples instance reconstruction from semantic inference. 
+            We propose to build a class-agnostic 3D instance map that is incrementally constructed from RGB-D input, while semantic features are extracted only from a small set of automatically selected views using vision-language models. 
+            This design enables stable instance tracking and zero-shot semantic labeling throughout online exploration. 
+            Our system operates in real time and outperforms state-of-the-art open-vocabulary mapping baselines on standard benchmarks. 
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paper video. -->
+    <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/MrKrnHhk8IA?rel=0&amp;showinfo=0"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div> -->
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <!-- Visual Effects. -->
+      <div class="column">
+        <div class="content">
+          <h2 class="title is-3">Instance Map</h2>
+          <p>
+            Interative visualization of the reconstructed instance map. Each instance is assigned a unique color, and the same instance maintains consistent coloring across frames.
+          </p>
+          <video id="instance-map" autoplay controls playsinline height="100%">
+            <source src="./static/videos/Instance_Map_Incre.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+      <!-- Matting. -->
+      <div class="column">
+        <div class="content">
+          <h2 class="title is-3">Semantic Map</h2>
+          <p>
+            Interactive visualization of the incrementally aggregated semantic map. Each instance is colored according to its evaluated semantic category.
+          </p>
+          <video id="semantic-map" controls playsinline height="100%">
+            <source src="./static/videos/Semantic_Map_Incre.mp4"
+                    type="video/mp4">
+          </video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="Pipeline">
+  <div class="container is-max-desktop content">
+    <h2 class="title">System Overview</h2>
+    <img src="./static/images/pipeline1.png" style="width: 80%; margin: 0 auto; display: block;" />
+    <p class="has-text-centered">
+      Part A & B: Class-Agnostic Instance Map Reconstruction
+    </p>
+    <img src="./static/images/pipeline2.png" style="width: 85%; margin: 0 auto; display: block;" />
+    <p class="has-text-centered">
+      Part C & D: Incremental Semantic Features Aggregation.
+    </p>
+  </div>
+</section>
+
+<section class="section" id="Pipeline">
+  <div class="container is-max-desktop content">
+    <h2 class="title">Incremental Semantic Mapping</h2>
+    <div class="columns">
+      <div class="column">
+        <img src="./static/images/ViewSelections.png" style="width: 100%; margin: 0 auto; display: block;"/>
+        <p class="has-text-justified">
+          <b>Top Figure:</b> 
+          The left side shows the <i>pixel-counting strategy</i> that prioritizes frames with larger object masking area, often leading to redundant front-facing views. <br>
+
+          The right side depicts our proposed <i>object-centric view coverage</i> method, which maintains a spherical map of explored viewing directions and selects frames that provide novel perspectives of the object.
+        </p>
+      </div>
+      <div class="column">
+        <img src="./static/images/IncreMetrics.png" style="width: 90%; margin: 0 auto; display: block;" />
+      </div>
+    </div>
+    <div class="has-text-justified">
+      <b>Right Figure: </b>
+      We compare our incremental semantic aggregation using the <i>view coverage strategy</i> against pixel-counting and other baselines. Our method achieves comparable semantic accuracy (mIoU, mAcc, AP25) while requiring <b>significantly fewer VLM queries</b> per instance, demonstrating efficient and scalable open-vocabulary mapping during online exploration.
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section" id="Visualizations">
+  <div class="container is-max-desktop content">
+    <h2 class="title">Visualizations</h2>
+
+    <h3 class="title">Instance Maps</h3>
+    <img src="./static/images/InstColorVisuals1.png" style="width: 90%; margin: 0 auto; display: block;"/>
+    <p class="has-text-centered">
+      Qualitative comparison of instance maps on the Replica dataset.
+    </p>
+    <img src="./static/images/InstColorVisuals2.png" style="width: 90%; margin: 0 auto; display: block;"/>
+    <p class="has-text-centered">
+      Qualitative comparison of instance maps on the ScanNet dataset.
+    </p>
+
+    <h3 class="title">Semantic Maps</h3>
+    <img src="./static/images/SemColorVisuals.png" style="width: 90%; margin: 0 auto; display: block;"/>
+    <p class="has-text-centered">
+      Qualitative comparison of semantic maps on the Replica dataset.
+    </p>
+    <img src="./static/images/SemColorVisuals2.png" style="width: 90%; margin: 0 auto; display: block;"/>
+    <p class="has-text-centered">
+      Qualitative comparison of semantic maps on the ScanNet dataset.
+    </p>
+  </div>
+</section>
+
+<section class="section" id="Open-Vocabulary-Querying">
+  <div class="container is-max-desktop content">
+    <h2 class="title">Open-Vocabulary Querying</h2>
+
+    <h3 class="title">Heat Maps</h3>
+    <img src="./static/images/HeatMapVisuals1.png" style="width: 90%; margin: 0 auto; display: block;" />
+    <p class="has-text-centered">
+      Heat maps for semantic querying to the scenes from the Replica dataset.
+    </p>
+    <img src="./static/images/HeatMapVisuals2.png" style="width: 90%; margin: 0 auto; display: block;" />
+    <p class="has-text-centered">
+      Heat maps for semantic querying to the scenes from the ScanNet dataset.
+    </p>
+    
+    <h3 class="title">Instance Highlighting</h3>
+    <img src="./static/images/OpenQueryVisuals.png" style="width: 90%; margin: 0 auto; display: block;" />
+    <p class="has-text-centered">
+      Instance highlighting from arbitrary text queries.
+    </p>
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>
+      TBD
+    </code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <!-- <div class="content has-text-centered">
+      <a class="icon-link"
+         href="./static/videos/nerfies_paper.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div> -->
+    <div class="columns is-centered">
+      <!-- <div class="column is-8"> -->
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            This means you are free to borrow the <a
+              href="https://github.com/nerfies/nerfies.github.io">source code</a> of this website,
+            we just ask that you link back to this page in the footer.
+          </p>
+        </div>
+      <!-- </div> -->
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
